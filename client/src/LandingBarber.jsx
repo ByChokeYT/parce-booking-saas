@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from './context/AuthContext';
 import {
     Scissors, Calendar, User, ArrowRight, Star,
     MapPin, Phone, Instagram, X, Shield, Clock,
@@ -67,6 +68,7 @@ const AuthModal = ({ mode, onClose, onToggle }) => {
     const isLogin = mode === 'login';
     const [loading, setLoading] = useState(false);
     const [loginError, setLoginError] = useState(null);
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -76,28 +78,17 @@ const AuthModal = ({ mode, onClose, onToggle }) => {
         const email = e.target.email.value.toLowerCase();
         const password = e.target.password.value;
 
-        try {
-            const response = await fetch('http://localhost:3001/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+        const result = await login(email, password);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                // Simulación de éxito por ahora
-                console.log("Login exitoso:", data);
-                alert("ACCESO CONCEDIDO. Bienvenido " + data.user.full_name);
-                onClose();
-            } else {
-                setLoginError(data.error || "Falla en la autenticación");
-            }
-        } catch (error) {
-            setLoginError("Servidor no responde (Verifica que el backend esté corriendo)");
-        } finally {
-            setLoading(false);
+        if (result.success) {
+            console.log("Login exitoso");
+            // No need to alert, the redirect will happen automatically
+            // via PublicRoute in App.jsx
+            onClose();
+        } else {
+            setLoginError(result.error);
         }
+        setLoading(false);
     };
 
     return (

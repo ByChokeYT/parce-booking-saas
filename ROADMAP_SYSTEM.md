@@ -15,32 +15,32 @@
 
 ## 📅 **DÍA 1: ESTRUCTURA MOBILE + SESIÓN SEGURA (Lunes - 5 horas)**
 
-### **MAÑANA (8:00 AM - 11:00 AM) - 3 horas:**
+
 
 **Backend - Seguridad base:**
-1. [ ] Crear middleware de autenticación JWT
-2. [ ] Proteger TODAS las rutas de turnos/clientes con el middleware
-3. [ ] Modificar el login para que devuelva JWT token
-4. [ ] Probar login en Postman/Thunder Client
+1. [x] Crear middleware de autenticación JWT
+2. [x] Proteger TODAS las rutas de turnos/clientes con el middleware
+3. [x] Modificar el login para que devuelva JWT token
+4. [x] Probar login en Postman/Thunder Client
 
 **Frontend - Context y Router:**
-5. [ ] Instalar `react-router-dom`
-6. [ ] Crear `AuthContext.jsx` con login/logout/user
-7. [ ] Conectar el login de LandingBarber con AuthContext
-8. [ ] Guardar token en localStorage
+5. [x] Instalar `react-router-dom`
+6. [x] Crear `AuthContext.jsx` con login/logout/user
+7. [x] Conectar el login de LandingBarber con AuthContext
+8. [x] Guardar token en localStorage
 
 ### **TARDE (2:00 PM - 5:00 PM) - 3 horas:**
 
 **Layout Mobile:**
-9. [ ] Crear componente `MobileLayout.jsx` con:
+9. [x] Crear componente `MobileLayout.jsx` con:
    - Header fijo arriba
    - Área de contenido scrolleable
    - Bottom Navigation con 4 tabs
-10. [ ] Crear 4 páginas vacías: Home, Agenda, Clientes, Perfil
-11. [ ] Configurar rutas en App.jsx
-12. [ ] Implementar navegación entre tabs (cambio de color al activo)
-13. [ ] Hacer que al tocar cada tab cambie la pantalla
-14. [ ] Agregar animación de transición entre pantallas
+10. [x] Crear 4 páginas vacías: Home, Agenda, Clientes, Perfil
+11. [x] Configurar rutas en App.jsx
+12. [x] Implementar navegación entre tabs (cambio de color al activo)
+13. [x] Hacer que al tocar cada tab cambie la pantalla
+14. [x] Agregar animación de transición entre pantallas
 
 **Probar:**
 - ✅ Login guarda sesión
