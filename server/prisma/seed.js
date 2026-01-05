@@ -15,7 +15,7 @@ async function main() {
             password_hash: adminPassword,
         },
         create: {
-            full_name: 'Royal Admin',
+            full_name: 'Flow Admin',
             email: 'admin@barber.com',
             password_hash: adminPassword,
             phone: '1234567890',

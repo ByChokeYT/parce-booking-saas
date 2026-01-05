@@ -7,6 +7,7 @@ import {
     ChevronRight, Facebook, Twitter, Zap,
     ExternalLink, Menu
 } from 'lucide-react';
+import logo from '../assets/001logo-1.png';
 
 /* =============================================================================
   🎨 DESIGN SYSTEM: "SHARP & BOLD" (v2.0 - Industrial Premium)
@@ -15,11 +16,11 @@ import {
 
 const Text = ({ variant = 'body', className, children, ...props }) => {
     const styles = {
-        hero: 'text-6xl md:text-9xl font-black tracking-tighter text-white leading-[0.8] uppercase italic drop-shadow-2xl',
-        h2: 'text-4xl md:text-6xl font-black text-white uppercase tracking-tighter italic leading-none',
-        h3: 'text-2xl font-black text-white uppercase tracking-tight',
+        hero: 'text-6xl md:text-9xl font-black tracking-tighter text-white leading-[0.8] uppercase italic drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)] font-outfit',
+        h2: 'text-4xl md:text-7xl font-black text-white uppercase tracking-tighter italic leading-[0.85] font-outfit',
+        h3: 'text-2xl font-black text-white uppercase tracking-tight font-outfit',
         body: 'text-zinc-400 text-sm md:text-base leading-relaxed font-medium tracking-wide',
-        label: 'text-[10px] md:text-xs text-amber-500 font-black uppercase tracking-[0.4em] mb-2 block',
+        label: 'text-[10px] md:text-xs text-amber-500 font-black uppercase tracking-[0.6em] mb-2 block text-glow-amber',
     };
     return <p className={`${styles[variant]} ${className || ''}`} {...props}>{children}</p>;
 };
@@ -35,27 +36,23 @@ const BarberButton = ({ variant = 'primary', icon: Icon, children, className, fu
             className={`
         group relative px-10 py-5 font-black uppercase tracking-[0.2em] text-[10px] overflow-hidden transition-all duration-300
         ${fullWidth ? 'w-full' : 'inline-flex'} items-center justify-center gap-4
-        ${isPrimary ? 'text-black' : 'text-white border border-zinc-800 hover:border-amber-500'}
+        ${isPrimary ? 'text-black glow-amber hover:glow-amber-strong' : 'text-white border border-white/10 glass hover:border-amber-500/50'}
+        active:scale-95 rounded-xl
         ${className || ''}
       `}
         >
             {/* Background Layers */}
-            <div className={`absolute inset-0 transition-transform duration-500 ease-in-out transform -translate-x-full group-hover:translate-x-0 ${isPrimary ? 'bg-white' : 'bg-zinc-800'}`}></div>
-            {isPrimary && <div className="absolute inset-0 bg-amber-500 -z-10"></div>}
+            <div className={`absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] transform -translate-x-full group-hover:translate-x-0 ${isPrimary ? 'bg-white' : 'bg-amber-500'}`}></div>
+            {isPrimary && <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-400"></div>}
 
             {/* Text/Icon */}
-            <span className="relative z-10 flex items-center gap-3 transition-colors duration-300 group-hover:text-black">
-                <span className={`${isPrimary ? 'group-hover:text-black' : 'group-hover:text-amber-500'}`}>{children}</span>
-                {Icon && <Icon size={14} className={`transition-all duration-300 group-hover:rotate-12 ${isPrimary ? 'group-hover:scale-125' : 'text-amber-500'}`} />}
+            <span className={`relative z-10 flex items-center gap-3 transition-colors duration-500 ${isPrimary ? 'group-hover:text-black' : 'group-hover:text-black'}`}>
+                <span>{children}</span>
+                {Icon && <Icon size={16} className="transition-all duration-500 group-hover:rotate-45" />}
             </span>
 
-            {/* Decorative "Slices" */}
-            <div className="absolute top-0 right-0 w-[4px] h-full bg-white/10 group-hover:bg-black/10 transition-colors"></div>
-            <div className="absolute top-0 left-0 w-1 h-3 bg-white/20 group-hover:bg-black/20"></div>
-            <div className="absolute bottom-0 right-0 w-1 h-3 bg-white/20 group-hover:bg-black/20"></div>
-
-            {/* Razor Edge Shine */}
-            <div className="absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-45 group-hover:left-[100%] transition-all duration-1000 ease-in-out"></div>
+            {/* Shine Edge */}
+            <div className="absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 group-hover:left-[100%] transition-all duration-1000"></div>
         </button>
     );
 };
@@ -94,30 +91,28 @@ const AuthModal = ({ mode, onClose, onToggle }) => {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             {/* Cinematic Backdrop */}
-            <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl" onClick={onClose} />
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl animate-fade-in" onClick={onClose} />
 
             {/* Premium Industrial Container */}
-            <div className="relative w-full max-w-xl bg-[#050505] border border-zinc-900 shadow-[0_0_100px_rgba(0,0,0,1)] overflow-hidden animate-in fade-in zoom-in-95 duration-500">
+            <div className="relative w-full max-w-xl bg-zinc-950/80 glass glow-amber shadow-[0_0_100px_rgba(245,158,11,0.1)] overflow-hidden animate-slide-up rounded-3xl">
 
                 {/* Decorative Grid Layer */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+                <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-grid-white"></div>
 
                 {/* Industrial Accents */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"></div>
-                <div className="absolute top-0 left-0 w-[2px] h-full bg-gradient-to-b from-amber-500/20 via-transparent to-transparent"></div>
-                <div className="absolute top-6 left-6 text-[8px] font-black text-zinc-800 tracking-[0.8em] uppercase select-none">Access_Protocol_v2.0</div>
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
 
                 <button
                     onClick={onClose}
-                    className="absolute top-8 right-8 text-zinc-700 hover:text-amber-500 hover:rotate-90 transition-all duration-300"
+                    className="absolute top-8 right-8 text-white/20 hover:text-amber-500 transition-all duration-300 p-2 hover:bg-white/5 rounded-full"
                 >
                     <X size={24} />
                 </button>
 
-                <div className="relative z-10 p-12 md:p-20">
-                    <div className="mb-16">
+                <div className="relative z-10 p-12 md:p-16">
+                    <div className="mb-12">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-2 h-2 bg-amber-500 animate-pulse"></div>
+                            <div className="w-2 h-2 bg-amber-500 animate-pulse rounded-full"></div>
                             <Text variant="label" className="!mb-0">Secure_Entry_System</Text>
                         </div>
                         <Text variant="h2" className="text-4xl md:text-6xl tracking-tighter">
@@ -136,50 +131,50 @@ const AuthModal = ({ mode, onClose, onToggle }) => {
                             {!isLogin && (
                                 <div className="grid grid-cols-2 gap-8">
                                     <div className="relative group">
-                                        <label className="text-[8px] font-black text-zinc-600 tracking-widest uppercase mb-2 block group-focus-within:text-amber-500 transition-colors">First_Name</label>
+                                        <label className="text-[9px] font-black text-zinc-500 tracking-[0.3em] uppercase mb-4 block group-focus-within:text-amber-500 transition-colors">First_Name</label>
                                         <input
                                             name="first_name"
                                             required
                                             placeholder="ENTER_NAME"
-                                            className="w-full bg-zinc-950 border border-zinc-900 px-4 py-4 text-[10px] font-black tracking-widest outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 transition-all text-white font-mono"
+                                            className="w-full bg-white/5 border border-white/10 px-8 py-6 text-base font-bold tracking-widest outline-none focus:border-amber-500/50 focus:bg-white/[0.08] transition-all text-white rounded-2xl placeholder:text-zinc-800 font-outfit"
                                         />
                                     </div>
                                     <div className="relative group">
-                                        <label className="text-[8px] font-black text-zinc-600 tracking-widest uppercase mb-2 block group-focus-within:text-amber-500 transition-colors">Last_Name</label>
+                                        <label className="text-[10px] font-black text-zinc-500 tracking-[0.4em] uppercase mb-5 block group-focus-within:text-amber-500 transition-colors">Last_Name</label>
                                         <input
                                             name="last_name"
                                             required
                                             placeholder="ENTER_SURNAME"
-                                            className="w-full bg-zinc-950 border border-zinc-900 px-4 py-4 text-[10px] font-black tracking-widest outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 transition-all text-white font-mono"
+                                            className="w-full bg-white/5 border border-white/10 px-8 py-6 text-base font-bold tracking-widest outline-none focus:border-amber-500/50 focus:bg-white/[0.08] transition-all text-white rounded-2xl placeholder:text-zinc-800 font-outfit"
                                         />
                                     </div>
                                 </div>
                             )}
 
                             <div className="relative group">
-                                <label className="text-[8px] font-black text-zinc-600 tracking-widest uppercase mb-2 block group-focus-within:text-amber-500 transition-colors">Comm_Link_Address</label>
+                                <label className="text-[10px] font-black text-zinc-500 tracking-[0.4em] uppercase mb-5 block group-focus-within:text-amber-500 transition-colors">Access_Credential</label>
                                 <div className="relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-amber-500 transition-colors" size={14} />
+                                    <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-amber-500 transition-colors" size={20} />
                                     <input
                                         name="email"
                                         type="email"
                                         required
                                         placeholder="NAME@DOMAIN.COM"
-                                        className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-4 text-[10px] font-black tracking-widest outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 transition-all text-white font-mono"
+                                        className="w-full bg-white/5 border border-white/10 pl-16 pr-8 py-6 text-base font-bold tracking-widest outline-none focus:border-amber-500/50 focus:bg-white/[0.08] transition-all text-white rounded-2xl placeholder:text-zinc-800 font-outfit"
                                     />
                                 </div>
                             </div>
 
                             <div className="relative group">
-                                <label className="text-[8px] font-black text-zinc-600 tracking-widest uppercase mb-2 block group-focus-within:text-amber-500 transition-colors">Security_Hash_Key</label>
+                                <label className="text-[10px] font-black text-zinc-500 tracking-[0.4em] uppercase mb-5 block group-focus-within:text-amber-500 transition-colors">Security_Code</label>
                                 <div className="relative">
-                                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-amber-500 transition-colors" size={14} />
+                                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-amber-500 transition-colors" size={20} />
                                     <input
                                         name="password"
                                         type="password"
                                         required
                                         placeholder="••••••••••••"
-                                        className="w-full bg-zinc-950 border border-zinc-900 pl-12 pr-4 py-4 text-[10px] font-black tracking-widest outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 transition-all text-white font-mono"
+                                        className="w-full bg-white/5 border border-white/10 pl-16 pr-8 py-6 text-base font-bold tracking-widest outline-none focus:border-amber-500/50 focus:bg-white/[0.08] transition-all text-white rounded-2xl placeholder:text-zinc-800 font-outfit"
                                     />
                                 </div>
                             </div>
@@ -236,13 +231,13 @@ const TeamSection = () => {
             </div>
 
             <div className="max-w-7xl mx-auto relative z-10">
-                <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between border-l-4 border-amber-500 pl-8">
+                <div className="mb-32 flex flex-col md:flex-row md:items-end justify-between border-l-8 border-amber-500 pl-12">
                     <div>
                         <Text variant="label">Precision Squad</Text>
-                        <Text variant="h2">LOS <span className="text-amber-500">ARTESANOS</span></Text>
+                        <Text variant="h2">LOS <span className="text-amber-500 text-glow-amber">ARTESANOS</span></Text>
                     </div>
-                    <Text variant="body" className="max-w-xs mt-6 md:mt-0 opacity-60">
-                        No somos barberos, somos ingenieros de tu imagen. Milímetros de perfección.
+                    <Text variant="body" className="max-w-md mt-10 md:mt-0 opacity-60 text-lg">
+                        No somos barberos, somos ingenieros de tu imagen. Milímetros de perfección al servicio de tu estilo.
                     </Text>
                 </div>
 
@@ -286,14 +281,14 @@ const ServiceSection = () => {
     ];
 
     return (
-        <section id="servicios" className="py-32 bg-zinc-900 border-y border-zinc-800 relative">
-            <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-[1fr_2fr] gap-20">
+        <section id="servicios" className="py-32 bg-zinc-950 border-y border-zinc-800 relative">
+            <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-[1fr_2fr] gap-20">
                 <div className="relative">
-                    <div className="sticky top-32">
+                    <div className="sticky top-40">
                         <Text variant="label">Menu_Protocol</Text>
-                        <Text variant="h2" className="mb-8">COSTO DE <br />LA <span className="text-amber-500">GLORIA</span></Text>
-                        <div className="w-20 h-1 bg-amber-500"></div>
-                        <Text variant="body" className="mt-8 italic uppercase text-xs tracking-[0.2em]">
+                        <Text variant="h2" className="mb-12">COSTO DE <br />LA <span className="text-amber-500 text-glow-amber">GLORIA</span></Text>
+                        <div className="w-32 h-2 bg-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.4)]"></div>
+                        <Text variant="body" className="mt-12 italic uppercase text-sm tracking-[0.3em] font-bold">
                             "Quality is never an accident. It is always the result of high intention."
                         </Text>
                     </div>
@@ -301,18 +296,18 @@ const ServiceSection = () => {
 
                 <div className="space-y-4">
                     {services.map((s, i) => (
-                        <div key={i} className="group relative flex items-center justify-between p-8 border border-zinc-800 hover:border-amber-500/30 transition-all hover:translate-x-4 cursor-default overflow-hidden">
+                        <div key={i} className="group relative flex items-center justify-between p-12 border border-white/5 glass hover:border-amber-500/30 transition-all hover:-translate-y-2 cursor-default overflow-hidden rounded-2xl">
                             {/* Number BG */}
-                            <span className="absolute -left-4 top-1/2 -translate-y-1/2 text-8xl font-black text-white/[0.03] group-hover:text-amber-500/10 transition-colors italic">{s.id}</span>
+                            <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-[10rem] font-black text-white/[0.02] group-hover:text-amber-500/5 transition-colors italic">{s.id}</span>
 
                             <div className="relative z-10">
-                                <h4 className="text-xl font-black uppercase tracking-tighter text-white group-hover:text-amber-500 transition-colors italic">{s.name}</h4>
-                                <p className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">{s.note}</p>
+                                <h4 className="text-3xl font-black uppercase tracking-tighter text-white group-hover:text-amber-500 transition-colors italic font-outfit">{s.name}</h4>
+                                <p className="text-xs text-zinc-500 uppercase tracking-[0.3em] font-bold mt-2">{s.note}</p>
                             </div>
 
                             <div className="relative z-10 flex flex-col items-end">
-                                <span className="text-2xl font-black text-amber-500 tracking-tighter">${s.price}K</span>
-                                <div className="h-[2px] w-full bg-amber-500/20 mt-1 origin-right transition-transform group-hover:scale-x-150"></div>
+                                <span className="text-4xl font-black text-amber-500 tracking-tighter text-glow-amber">${s.price}K</span>
+                                <div className="h-[3px] w-full bg-amber-500/20 mt-2 origin-right transition-transform group-hover:scale-x-150"></div>
                             </div>
                         </div>
                     ))}
@@ -326,7 +321,7 @@ const ServiceSection = () => {
 }
 
 /* =============================================================================
-  🚀 MAIN COMPONENT: ROYAL BARBER PRO
+  🚀 MAIN COMPONENT: FLOW PRO
   =============================================================================
 */
 
@@ -347,27 +342,27 @@ export default function LandingBarber() {
             <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'h-16 bg-zinc-950/95 border-b border-zinc-800' : 'h-24 bg-transparent'}`}>
                 <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-amber-500 flex items-center justify-center text-black font-black text-2xl drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">R</div>
+                        <img src={logo} alt="FLOW Logo" className="w-12 h-12 object-contain" />
                         <div className="hidden sm:block">
-                            <span className="font-black text-2xl tracking-tighter uppercase italic block leading-none">Royal</span>
-                            <span className="text-[8px] font-black tracking-[0.6em] text-zinc-500 uppercase">Est_1994</span>
+                            <span className="font-outfit font-black text-2xl tracking-tighter uppercase italic block leading-none">FLOW_SYSTEM</span>
+                            <span className="text-[7px] font-black tracking-[0.2em] text-zinc-500 uppercase">Gestiona_Tu_Barbería_En_Piloto_Automático</span>
                         </div>
                     </div>
 
                     <div className="hidden lg:flex gap-12">
                         {[
-                            { label: 'SERVICES', href: '#servicios' },
-                            { label: 'SQUAD', href: '#equipo' },
-                            { label: 'LOCATION', href: '#ubicacion' }
+                            { label: 'INTEL_REPORTS', href: '#servicios' },
+                            { label: 'ACTIVE_SQUAD', href: '#equipo' },
+                            { label: 'DEPLOYMENT_POINT', href: '#ubicacion' }
                         ].map(item => (
                             <a key={item.label} href={item.href} className="text-[10px] font-black tracking-[0.4em] text-zinc-500 hover:text-amber-500 transition-colors uppercase">{item.label}</a>
                         ))}
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <button onClick={() => setAuthMode('login')} className="text-[10px] font-black tracking-[0.4em] hover:text-amber-500 transition-colors uppercase">Login_id</button>
+                        <button onClick={() => setAuthMode('login')} className="text-[10px] font-black tracking-[0.4em] hover:text-amber-500 transition-colors uppercase">AUTH_REQUIRED</button>
                         <BarberButton onClick={() => setAuthMode('register')} variant="primary" className="!px-6 !py-3">
-                            Book_Now
+                            RESERVE_SLOT
                         </BarberButton>
                     </div>
                 </div>
@@ -382,7 +377,7 @@ export default function LandingBarber() {
                     <img
                         src="https://images.unsplash.com/photo-1503951914875-befbb7470d03?auto=format&fit=crop&q=80&w=2000"
                         className="w-full h-full object-cover grayscale contrast-125 scale-105"
-                        alt="Royal Monolith"
+                        alt="Flow Monolith"
                     />
                 </div>
 
@@ -397,20 +392,23 @@ export default function LandingBarber() {
 
                 <div className="relative z-30 container mx-auto px-6 text-center space-y-12">
                     <div className="space-y-4 animate-in fade-in duration-1000 slide-in-from-bottom-12">
-                        <Text variant="label" className="flex items-center justify-center gap-4">
+                        <Text variant="label" className="flex items-center justify-center gap-4 uppercase italic">
                             <span className="w-12 h-[1px] bg-amber-500"></span>
-                            Industrial Mastery
+                            Gestiona_Tu_Barbería_En_Piloto_Automático
                             <span className="w-12 h-[1px] bg-amber-500"></span>
                         </Text>
                         <Text variant="hero">
-                            PRECISION IS <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-amber-200 to-white italic">EVERYTHING.</span>
+                            FLOW_SYSTEM <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-amber-100 to-white italic">PRECISION.</span>
                         </Text>
+                        <p className="text-zinc-400 text-sm md:text-lg font-medium tracking-wide max-w-2xl mx-auto mt-6">
+                            Sistema todo-en-uno para gestionar citas, pagos, barberos y clientes sin complicaciones.
+                        </p>
                     </div>
 
                     <div className="flex flex-col md:flex-row items-center justify-center gap-8 pt-8 animate-in fade-in duration-1000 delay-500 slide-in-from-bottom-6">
-                        <BarberButton icon={Calendar} onClick={() => setAuthMode('register')}>CLAIM_YOUR_APPOINTMENT</BarberButton>
-                        <BarberButton variant="outline" icon={Shield} onClick={() => setAuthMode('login')}>VIP_IDENTITY_VERIFY</BarberButton>
+                        <BarberButton icon={Calendar} onClick={() => setAuthMode('register')}>INITIATE_SYNC_PROTOCOL</BarberButton>
+                        <BarberButton variant="outline" icon={Shield} onClick={() => setAuthMode('login')}>CORE_IDENTITY_AUTH</BarberButton>
                     </div>
                 </div>
 
@@ -442,7 +440,7 @@ export default function LandingBarber() {
 
                     <Scissors size={64} className="mb-12 text-black transition-transform group-hover:rotate-45" />
                     <h2 className="text-5xl md:text-8xl font-black uppercase italic leading-[0.85] tracking-tighter mb-10">
-                        STRATEGIC <br />HQ_CENTER
+                        LOGISTICS <br />BASE_HQ
                     </h2>
                     <div className="space-y-6 font-black text-xl border-l-[6px] border-black pl-8 mb-12">
                         <p className="tracking-tighter">AV. SIEMPRE VIVA 742</p>
@@ -515,7 +513,7 @@ export default function LandingBarber() {
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-t border-zinc-900 pt-8 mt-16">
-                        <span className="text-[10px] font-black text-zinc-800 tracking-[0.8em]">ROYAL_BARBER_SYSTEM_©2025</span>
+                        <span className="text-[10px] font-black text-zinc-800 tracking-[0.8em]">FLOW_SYSTEM_©2026</span>
                         <div className="flex gap-12 font-black text-[8px] text-zinc-800 tracking-[0.3em]">
                             <a href="#" className="hover:text-white transition-colors">PRIVACY_PROTOCOL</a>
                             <a href="#" className="hover:text-white transition-colors">TERMS_OF_SERVICE</a>

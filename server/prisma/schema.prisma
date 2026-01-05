@@ -1,3 +1,8 @@
+// ============================================================================
+// FLOW SYSTEM - PRISMA SCHEMA
+// Architecture for Excellence
+// ============================================================================
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,63 +12,378 @@ datasource db {
   url      = "file:../../database.sqlite"
 }
 
+// ============================================================================
+// CORE MODELS
+// ============================================================================
+
+/// Barbershop - Multi-tenant support (each barbershop is isolated)
+model Barbershop {
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String?
+  phone       String?
+  email       String?
+  logo_url    String?
+  country     String   @default("AR")
+  currency    String   @default("ARS")
+  timezone    String   @default("America/Argentina/Buenos_Aires")
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // Relations
+  users          User[]
+  barbers        Barber[]
+  services       Service[]
+  clients        Client[]
+  appointments   Appointment[]
+  schedules      Schedule[]
+  holidays       Holiday[]
+  payment_methods PaymentMethod[]
+  payments       Payment[]
+  reviews        Review[]
+  cash_outs      CashOut[]
+
+  @@map("barbershops")
+}
+
+/// User - System users (admin, barbers, receptionists)
 model User {
   id            Int      @id @default(autoincrement())
+  barbershop_id Int
   full_name     String
   email         String   @unique
   password_hash String
   phone         String?
-  role          String   @default("client") // 'admin', 'client', 'barber'
+  avatar_url    String?
+  role          String   @default("barber") // 'owner', 'admin', 'barber', 'receptionist'
+  is_active     Boolean  @default(true)
   created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
+  // Relations
+  barbershop     Barbershop @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
   barber_profile Barber?
-  appointments   Appointment[]
+  cash_outs      CashOut[]
 
+  @@index([barbershop_id])
+  @@index([email])
   @@map("users")
 }
 
+/// Barber - Barber profile with commission and payment info
 model Barber {
-  id           Int     @id @default(autoincrement())
-  user_id      Int     @unique
-  specialties  String?
-  is_active    Boolean @default(true)
-  bio          String?
-  
-  user         User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  appointments Appointment[]
+  id                   Int     @id @default(autoincrement())
+  barbershop_id        Int
+  user_id              Int     @unique
+  specialties          String? // Comma-separated or JSON
+  bio                  String?
+  commission_percent   Decimal @default(60) // Barber gets 60% by default
+  avatar_url           String?
+  bank_account         String? // Bank account for transfers
+  digital_wallet_type  String? // 'mercadopago', 'uala', etc.
+  digital_wallet_number String?
+  qr_code_url          String? // QR code for payments
+  is_active            Boolean @default(true)
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
 
+  // Relations
+  barbershop   Barbershop    @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+  schedules    Schedule[]
+  commissions  Commission[]
+  reviews      Review[]
+
+  @@index([barbershop_id])
+  @@index([user_id])
   @@map("barbers")
 }
 
+/// Client - Customer information with reputation tracking
+model Client {
+  id              Int      @id @default(autoincrement())
+  barbershop_id   Int
+  full_name       String
+  email           String?
+  phone           String
+  avatar_url      String?
+  notes           String? // Internal notes about client preferences
+  birthday        DateTime? // For marketing automation
+  last_visit      DateTime? // To detect inactive clients
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  // Relations
+  barbershop   Barbershop        @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+  appointments   Appointment[]
+  reputation   ClientReputation?
+  loyalty      LoyaltyCard?
+  reviews      Review[]
+  marketing_actions MarketingAction[]
+
+  @@index([barbershop_id])
+  @@index([phone])
+  @@map("clients")
+}
+
+/// Service - Services offered by the barbershop
 model Service {
-  id               Int     @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
+  barbershop_id    Int
   name             String
   description      String?
+  category         String?  // 'corte', 'barba', 'combo', 'tratamiento'
   price            Decimal
   duration_minutes Int
-  is_active        Boolean @default(true)
+  is_active        Boolean  @default(true)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
 
+  // Relations
+  barbershop   Barbershop    @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
   appointments Appointment[]
 
+  @@index([barbershop_id])
+  @@index([is_active])
   @@map("services")
 }
 
+// ============================================================================
+// APPOINTMENT & SCHEDULING
+// ============================================================================
+
+/// Appointment - Core booking system
 model Appointment {
-  id         Int      @id @default(autoincrement())
-  client_id  Int
-  barber_id  Int
-  service_id Int
-  start_time DateTime
-  end_time   DateTime
-  status     String   @default("pending") // 'pending', 'confirmed', 'completed', 'cancelled', 'no_show'
-  notes      String?
-  created_at DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  barbershop_id Int
+  client_id     Int
+  barber_id     Int
+  service_id    Int
+  start_time    DateTime
+  end_time      DateTime
+  status        String   @default("requested") // 'requested', 'pending_verification', 'confirmed', 'in_progress', 'completed', 'cancelled', 'no_show'
+  payment_id    Int?     // Link to payment record
+  notes         String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
-  client  User    @relation(fields: [client_id], references: [id])
-  barber  Barber  @relation(fields: [barber_id], references: [id])
-  service Service @relation(fields: [service_id], references: [id])
+  // Relations
+  barbershop Barbershop  @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+  client     Client      @relation(fields: [client_id], references: [id])
+  barber     Barber      @relation(fields: [barber_id], references: [id])
+  service    Service     @relation(fields: [service_id], references: [id])
+  payment    Payment?    @relation(fields: [payment_id], references: [id])
+  commission Commission?
 
+  @@index([barbershop_id])
   @@index([client_id])
   @@index([barber_id, start_time])
+  @@index([status])
+  @@index([start_time])
   @@map("appointments")
+}
+
+/// Schedule - Barber working hours
+model Schedule {
+  id            Int     @id @default(autoincrement())
+  barbershop_id Int
+  barber_id     Int
+  day_of_week   Int     // 0=Sunday, 1=Monday, ..., 6=Saturday
+  start_time    String  // "09:00"
+  end_time      String  // "18:00"
+  is_active     Boolean @default(true)
+
+  // Relations
+  barbershop Barbershop @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+  barber     Barber     @relation(fields: [barber_id], references: [id], onDelete: Cascade)
+
+  @@index([barbershop_id])
+  @@index([barber_id, day_of_week])
+  @@map("schedules")
+}
+
+/// Holiday - Closed days (holidays, vacations)
+model Holiday {
+  id            Int      @id @default(autoincrement())
+  barbershop_id Int
+  date          DateTime
+  reason        String   // "Navidad", "Vacaciones", etc.
+  is_recurring  Boolean  @default(false) // If true, repeats every year
+  created_at    DateTime @default(now())
+
+  // Relations
+  barbershop Barbershop @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+
+  @@index([barbershop_id])
+  @@index([date])
+  @@map("holidays")
+}
+
+// ============================================================================
+// FINANCIAL MODELS
+// ============================================================================
+
+/// Payment - Payment tracking
+model Payment {
+  id               Int      @id @default(autoincrement())
+  barbershop_id    Int
+  appointment_id   Int?     // Can be null for direct payments
+  amount           Decimal
+  payment_method   String   // 'cash', 'card', 'transfer', 'qr', 'digital_wallet'
+  payment_status   String   @default("pending") // 'pending', 'verified', 'failed'
+  proof_image_url  String?  // Photo of payment receipt
+  notes            String?
+  paid_at          DateTime @default(now())
+  verified_at      DateTime?
+  created_at       DateTime @default(now())
+
+  // Relations
+  barbershop   Barbershop    @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+  commission   Commission?
+
+  @@index([barbershop_id])
+  @@index([payment_status])
+  @@index([paid_at])
+  @@map("payments")
+}
+
+/// Commission - Barber earnings calculation
+model Commission {
+  id             Int      @id @default(autoincrement())
+  appointment_id Int      @unique
+  payment_id     Int      @unique
+  barber_id      Int
+  service_amount Decimal  // Original service price
+  commission_percent Decimal // Barber's percentage at time of service
+  barber_amount  Decimal  // Amount barber receives
+  house_amount   Decimal  // Amount barbershop receives
+  calculated_at  DateTime @default(now())
+
+  // Relations
+  appointment Appointment @relation(fields: [appointment_id], references: [id], onDelete: Cascade)
+  payment     Payment     @relation(fields: [payment_id], references: [id], onDelete: Cascade)
+  barber      Barber      @relation(fields: [barber_id], references: [id])
+
+  @@index([barber_id])
+  @@index([calculated_at])
+  @@map("commissions")
+}
+
+/// PaymentMethod - Available payment methods per barbershop
+model PaymentMethod {
+  id            Int      @id @default(autoincrement())
+  barbershop_id Int
+  method_type   String   // 'cash', 'card', 'transfer', 'mercadopago', 'uala', etc.
+  is_active     Boolean  @default(true)
+  account_info  String?  // JSON with account details
+  qr_code_url   String?
+  display_name  String   // "Efectivo", "Transferencia Banco X", etc.
+  created_at    DateTime @default(now())
+
+  // Relations
+  barbershop Barbershop @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+
+  @@index([barbershop_id])
+  @@map("payment_methods")
+}
+
+// ============================================================================
+// REPUTATION & REVIEWS
+// ============================================================================
+
+/// ClientReputation - Trust score for clients
+model ClientReputation {
+  id              Int      @id @default(autoincrement())
+  client_id       Int      @unique
+  trust_score     Int      @default(100) // Starts at 100
+  total_bookings  Int      @default(0)
+  completed_bookings Int   @default(0)
+  no_show_count   Int      @default(0)
+  cancelled_count Int      @default(0)
+  is_blocked      Boolean  @default(false)
+  blocked_until   DateTime?
+  blocked_reason  String?
+  updated_at      DateTime @updatedAt
+
+  // Relations
+  client Client @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  @@index([trust_score])
+  @@map("client_reputations")
+}
+
+/// Review - Ratings and reviews
+model Review {
+  id            Int      @id @default(autoincrement())
+  barbershop_id Int
+  client_id     Int
+  barber_id     Int
+  rating        Int      // 1-5 stars
+  comment       String?
+  created_at    DateTime @default(now())
+
+  // Relations
+  barbershop Barbershop @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+  client     Client     @relation(fields: [client_id], references: [id])
+  barber     Barber     @relation(fields: [barber_id], references: [id])
+
+  @@index([rating])
+  @@map("reviews")
+}
+
+/// CashOut - Daily financial reconciliation
+model CashOut {
+  id              Int      @id @default(autoincrement())
+  barbershop_id   Int
+  user_id         Int      // Who performed the cash out
+  date            DateTime @default(now())
+  expected_cash   Decimal
+  actual_cash     Decimal
+  difference      Decimal
+  total_card      Decimal
+  total_transfer  Decimal
+  total_qr        Decimal
+  notes           String?
+  created_at      DateTime @default(now())
+
+  // Relations
+  barbershop Barbershop @relation(fields: [barbershop_id], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [user_id], references: [id])
+
+  @@index([barbershop_id])
+  @@index([date])
+  @@map("cash_outs")
+}
+
+/// LoyaltyCard - Rewards program
+model LoyaltyCard {
+  id              Int      @id @default(autoincrement())
+  client_id       Int      @unique
+  points          Int      @default(0)
+  total_accrued   Int      @default(0) // Total lifetime points
+  last_redeemed   DateTime?
+  updated_at      DateTime @updatedAt
+
+  client Client @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  @@map("loyalty_cards")
+}
+
+/// MarketingAction - Logs for automated messages
+model MarketingAction {
+  id              Int      @id @default(autoincrement())
+  client_id       Int
+  action_type     String   // 'birthday_wish', 'inactive_reminder', 'review_request', 'loyalty_reward'
+  channel         String   @default("whatsapp_sim")
+  sent_at         DateTime @default(now())
+  content         String?
+
+  client Client @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  @@index([action_type])
+  @@index([sent_at])
+  @@map("marketing_actions")
 }

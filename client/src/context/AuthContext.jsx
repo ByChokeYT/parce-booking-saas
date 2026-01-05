@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await fetch('http://localhost:3001/api/auth/login', {
+            const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,6 +56,31 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const register = async (email, password, full_name, phone, barbershop_name) => {
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, full_name, phone, barbershop_name }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setToken(data.token);
+                setUser(data.user);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                return { success: true };
+            } else {
+                return { success: false, error: data.error || 'Registration failed' };
+            }
+        } catch (error) {
+            console.error('Register error:', error);
+            return { success: false, error: 'Network error' };
+        }
+    };
+
     const logout = () => {
         setToken(null);
         setUser(null);
@@ -64,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, token, loading, login, logout, register }}>
             {children}
         </AuthContext.Provider>
     );
