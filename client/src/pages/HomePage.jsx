@@ -70,7 +70,7 @@ export default function HomePage() {
             {/* 1. HEADER MOBILE-FIRST */}
             <div className="flex justify-between items-start pt-2 mb-4">
                 <div className="flex flex-col">
-                    <h1 className="text-2xl font-black text-white uppercase italic tracking-tighter font-outfit leading-none">
+                    <h1 className="text-xl font-black text-white uppercase italic tracking-tighter font-outfit leading-none">
                         HOLA, {user?.full_name?.split(' ')[0] || 'OPERADOR'}
                     </h1>
                     <div className="flex items-center gap-2 mt-1">
@@ -187,8 +187,8 @@ export default function HomePage() {
                 </div>
             )}
 
-            {/* 4. QUICK ACTIONS (NEW SECTION) */}
-            <div className="grid grid-cols-4 gap-3 py-2">
+            {/* 4. QUICK ACTIONS (REFINED 2x2 GRID) */}
+            <div className="grid grid-cols-2 gap-3 py-2">
                 <QuickActionButton icon={Plus} label="Turno" color="amber" onClick={() => navigate('/agenda')} />
                 <QuickActionButton icon={UserPlus} label="Cliente" color="blue" onClick={() => navigate('/clientes')} />
                 <QuickActionButton icon={TrendingUp} label="Caja" color="emerald" onClick={() => navigate('/finanzas')} />

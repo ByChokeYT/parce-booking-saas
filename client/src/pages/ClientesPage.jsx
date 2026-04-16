@@ -71,7 +71,7 @@ export default function ClientesPage() {
 
                 <button
                     onClick={() => setIsAdding(!isAdding)}
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white px-5 py-2.5 rounded-xl font-black text-[10px] uppercase italic tracking-wider transition-all active:scale-[0.98] border border-white/10 shadow-lg"
+                    className="flex items-center justify-center gap-2 bg-white text-black px-5 py-2.5 rounded-xl font-black text-[10px] uppercase italic tracking-wider transition-all active:scale-[0.98] shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                 >
                     <UserPlus size={14} strokeWidth={3} />
                     {isAdding ? 'CANCELAR' : 'NUEVO CLIENTE'}

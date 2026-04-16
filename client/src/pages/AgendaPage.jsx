@@ -102,10 +102,10 @@ export default function AgendaPage() {
 
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-black px-6 py-3 rounded-xl font-black text-xs uppercase italic tracking-tighter transition-all active:scale-[0.98]"
+                    className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-black px-5 py-3 rounded-xl font-black text-[10px] uppercase italic tracking-wider transition-all active:scale-[0.98]"
                 >
                     <Plus size={16} strokeWidth={3} />
-                    Agendar_Cita
+                    NUEVO TURNO
                 </button>
             </div>
 
@@ -117,8 +117,8 @@ export default function AgendaPage() {
             ) : appointments.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 bg-zinc-900/30 border border-dashed border-white/5 rounded-3xl">
                     <Calendar size={48} className="text-zinc-800 mb-4" />
-                    <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">No_Appointments_Found</p>
-                    <p className="text-zinc-600 text-[10px] mt-1">El servidor no detecta señales en esta fecha.</p>
+                    <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px]">Sin turnos programados</p>
+                    <p className="text-zinc-600 text-[10px] mt-1">No hay señales de actividad para esta fecha.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 gap-4">

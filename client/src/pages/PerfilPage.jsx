@@ -120,7 +120,7 @@ export default function PerfilPage() {
                     <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">{user?.full_name}</h2>
                     <p className="text-amber-500 text-xs font-black uppercase tracking-[0.3em]">{user?.role} @ {barbershopData.name || 'Cargando...'}</p>
                 </div>
-                <button onClick={logout} className="md:ml-auto flex items-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-6 py-3 rounded-2xl font-black text-xs uppercase italic tracking-tighter transition-all">
+                <button onClick={logout} className="md:ml-auto flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase italic tracking-tighter transition-all shadow-lg active:scale-95">
                     <LogOut size={16} /> Salir
                 </button>
             </div>

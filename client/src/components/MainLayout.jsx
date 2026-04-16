@@ -143,8 +143,8 @@ export default function MainLayout() {
 
                 {/* Floating Action Button (FAB) - Mobile Only */}
                 <button
-                    onClick={() => { navigate('/agenda'); toast('Nuevo Turno', { icon: '✨' }); }}
-                    className="lg:hidden fixed bottom-24 right-4 w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-2xl shadow-[0_8px_32px_rgba(245,158,11,0.4)] flex items-center justify-center text-black z-40 active:scale-90 transition-all animate-bounce-slow border border-white/20"
+                    onClick={() => { navigate('/agenda'); toast('Abrir Agenda', { icon: '📅' }); }}
+                    className="lg:hidden fixed bottom-20 right-4 w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-2xl shadow-[0_8px_32px_rgba(245,158,11,0.4)] flex items-center justify-center text-black z-[60] active:scale-90 transition-all border border-white/20"
                 >
                     <Plus size={28} strokeWidth={3} />
                 </button>
