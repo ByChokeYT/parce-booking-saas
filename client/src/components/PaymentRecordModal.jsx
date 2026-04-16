@@ -50,10 +50,15 @@ export default function PaymentRecordModal({ isOpen, onClose, appointment, onPay
     };
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
+        <div className="fixed inset-0 z-[999] flex items-center md:items-center justify-center p-0 md:p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in overflow-hidden">
+            {/* Overlay background for mobile click-to-close */}
+            <div className="absolute inset-0 md:hidden" onClick={onClose}></div>
 
-            <div className="relative bg-zinc-900 border border-white/10 rounded-3xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="bg-zinc-900 border-t md:border border-white/10 w-full max-w-md rounded-t-[32px] md:rounded-3xl overflow-hidden shadow-2xl relative translate-y-0 animate-slide-up md:animate-zoom-in mt-auto md:mt-0 max-h-[92vh] flex flex-col">
+                {/* Drag Handle for Mobile */}
+                <div className="md:hidden flex justify-center pt-3 pb-1" onClick={onClose}>
+                    <div className="w-12 h-1.5 bg-zinc-800 rounded-full"></div>
+                </div>
                 {/* Header */}
                 <div className="p-6 border-b border-white/5 flex items-center justify-between">
                     <div>

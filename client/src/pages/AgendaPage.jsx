@@ -74,7 +74,8 @@ export default function AgendaPage() {
     };
 
     return (
-        <div className="space-y-6 animate-fade-in">
+        <>
+            <div className="space-y-6 animate-fade-in">
             {/* Header & Date Selector */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -109,10 +110,10 @@ export default function AgendaPage() {
                 </button>
             </div>
 
-            {/* Appointments List */}
+            {/* Appointments List (Skeleton Loading) */}
             {loading ? (
-                <div className="flex items-center justify-center py-20">
-                    <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="space-y-4">
+                    {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
                 </div>
             ) : appointments.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 bg-zinc-900/30 border border-dashed border-white/5 rounded-3xl">
@@ -227,20 +228,40 @@ export default function AgendaPage() {
                     ))}
                 </div>
             )}
+        </div>
 
-            <CreateAppointmentModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onCreated={fetchAppointments}
-                initialDate={new Date(selectedDate)}
-            />
+        <CreateAppointmentModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onCreated={fetchAppointments}
+            initialDate={new Date(selectedDate)}
+        />
 
-            <PaymentRecordModal
-                isOpen={isPaymentModalOpen}
-                onClose={() => setIsPaymentModalOpen(false)}
-                appointment={selectedAppointment}
-                onPaymentRecorded={fetchAppointments}
-            />
+        <PaymentRecordModal
+            isOpen={isPaymentModalOpen}
+            onClose={() => setIsPaymentModalOpen(false)}
+            appointment={selectedAppointment}
+            onPaymentRecorded={fetchAppointments}
+        />
+    </>
+);
+}
+
+function SkeletonCard() {
+    return (
+        <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[scan_2s_infinite]"></div>
+            <div className="flex gap-4">
+                <div className="w-12 h-12 bg-zinc-800 rounded-xl"></div>
+                <div className="flex-1 space-y-3 pt-1">
+                    <div className="w-24 h-2 bg-zinc-800 rounded"></div>
+                    <div className="w-40 h-4 bg-zinc-800 rounded"></div>
+                    <div className="flex gap-4">
+                        <div className="w-16 h-2 bg-zinc-800 rounded"></div>
+                        <div className="w-20 h-2 bg-zinc-800 rounded"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

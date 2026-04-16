@@ -90,8 +90,16 @@ export default function CreateAppointmentModal({ isOpen, onClose, onCreated, ini
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in">
-            <div className="bg-zinc-900 border border-white/5 w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl">
+        <div className="fixed inset-0 z-[999] flex items-center md:items-center justify-center p-0 md:p-4 bg-zinc-950/80 backdrop-blur-sm animate-fade-in overflow-hidden">
+            {/* Overlay background for mobile click-to-close */}
+            <div className="absolute inset-0 md:hidden" onClick={onClose}></div>
+
+            <div className="bg-zinc-900 border-t md:border border-white/10 w-full max-w-lg rounded-t-[32px] md:rounded-2xl overflow-hidden shadow-2xl relative translate-y-0 animate-slide-up md:animate-zoom-in mt-auto md:mt-0 max-h-[92vh] flex flex-col">
+                {/* Drag Handle for Mobile */}
+                <div className="md:hidden flex justify-center pt-3 pb-1" onClick={onClose}>
+                    <div className="w-12 h-1.5 bg-zinc-800 rounded-full"></div>
+                </div>
+
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-white/5">
                     <div>

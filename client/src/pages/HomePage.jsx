@@ -58,8 +58,19 @@ export default function HomePage() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-64">
-                <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="space-y-6 animate-pulse p-4">
+                <div className="flex justify-between items-center mb-8">
+                    <div className="space-y-2">
+                        <div className="h-4 w-32 bg-zinc-800 rounded"></div>
+                        <div className="h-8 w-48 bg-zinc-800 rounded"></div>
+                    </div>
+                    <div className="w-12 h-12 bg-zinc-800 rounded-full"></div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="h-32 bg-zinc-800 rounded-[28px]"></div>
+                    <div className="h-32 bg-zinc-800 rounded-[28px]"></div>
+                </div>
+                <div className="h-48 bg-zinc-800 rounded-[32px]"></div>
             </div>
         );
     }

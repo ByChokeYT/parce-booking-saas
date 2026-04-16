@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
-    Home, Calendar, Users, User, LogOut, Scissors, TrendingUp, Megaphone, Menu as MenuIcon, X, Plus, Bell
+    Home, Calendar, Users, User, LogOut, Scissors, TrendingUp, Megaphone, Menu as MenuIcon, X, Plus, Bell, UserPlus, Receipt
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import logo from '../../assets/001logo-1.png';
@@ -10,7 +10,9 @@ import toast from 'react-hot-toast';
 export default function MainLayout() {
     const { logout, user } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isFabExpanded, setIsFabExpanded] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const navItems = [
         { to: "/home", icon: Home, label: "Inicio" },
@@ -141,17 +143,27 @@ export default function MainLayout() {
                     </div>
                 </div>
 
-                {/* Floating Action Button (FAB) - Mobile Only */}
+                {/* Floating Action Button (FAB) - Multi-Action Expanded */}
+                {isFabExpanded && (
+                    <div className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[25] animate-fade-in" onClick={() => setIsFabExpanded(false)}>
+                        <div className="absolute bottom-36 right-4 flex flex-col items-end gap-3">
+                            <FabAction icon={UserPlus} label="Cliente" onClick={() => navigate('/clientes')} delay="delay-100" />
+                            <FabAction icon={Receipt} label="Venta" onClick={() => navigate('/finanzas')} delay="delay-75" />
+                            <FabAction icon={Scissors} label="Turno" onClick={() => navigate('/agenda')} delay="delay-0" />
+                        </div>
+                    </div>
+                )}
+
                 <button
-                    onClick={() => { navigate('/agenda'); toast('Abrir Agenda', { icon: '📅' }); }}
-                    className="lg:hidden fixed bottom-20 right-4 w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-2xl shadow-[0_8px_32px_rgba(245,158,11,0.4)] flex items-center justify-center text-black z-[60] active:scale-90 transition-all border border-white/20"
+                    onClick={() => setIsFabExpanded(!isFabExpanded)}
+                    className={`lg:hidden fixed bottom-20 right-4 w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-2xl shadow-[0_8px_32px_rgba(245,158,11,0.4)] flex items-center justify-center text-black z-[30] active:scale-90 transition-all border border-white/20 ${isFabExpanded ? 'rotate-45' : ''}`}
                 >
-                    <Plus size={28} strokeWidth={3} />
+                    {isFabExpanded ? <X size={28} strokeWidth={3} /> : <Plus size={28} strokeWidth={3} />}
                 </button>
 
                 {/* Mobile Bottom Nav (Royal Design) */}
                 {/* Mobile Bottom Nav (Royal Design) */}
-                <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-zinc-950/90 backdrop-blur-xl border-t border-white/5 pb-safe z-50">
+                <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-white/10 pb-safe z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
                     <div className="grid grid-cols-4 h-16 items-center">
                         <MobileNavItem to="/home" icon={Home} label="Inicio" />
                         <MobileNavItem to="/agenda" icon={Calendar} label="Agenda" />
@@ -169,7 +181,7 @@ function MobileNavItem({ to, icon: Icon, label }) {
         <NavLink
             to={to}
             className={({ isActive }) =>
-                `flex flex-col items-center justify-center relative group ${isActive ? 'text-amber-500' : 'text-zinc-600 hover:text-zinc-400'}`
+                `flex flex-col items-center justify-center relative group h-full ${isActive ? 'text-amber-500' : 'text-zinc-600'}`
             }
         >
             {({ isActive }) => (
@@ -180,14 +192,24 @@ function MobileNavItem({ to, icon: Icon, label }) {
                     <div className={`transition-all duration-300 ${isActive ? 'scale-110 -translate-y-1' : ''}`}>
                         <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                     </div>
-                    {/* 
-                    <span className={`text-[9px] font-black uppercase tracking-widest mt-1 ${isActive ? 'opacity-100' : 'opacity-0 hidden'}`}>
-                        {label}
-                    </span>
-                    */}
+                    <span className={`text-[8px] font-black uppercase tracking-tighter mt-1 transition-all duration-300 ${isActive ? 'opacity-100' : 'opacity-60'}`}>{label}</span>
                 </>
             )}
         </NavLink>
+    );
+}
+
+function FabAction({ icon: Icon, label, onClick, delay }) {
+    return (
+        <button
+            onClick={(e) => { e.stopPropagation(); onClick(); }}
+            className={`flex items-center gap-3 animate-slide-up ${delay}`}
+        >
+            <span className="bg-zinc-900 border border-white/10 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg shadow-xl">{label}</span>
+            <div className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center text-amber-500 shadow-2xl">
+                <Icon size={20} strokeWidth={2.5} />
+            </div>
+        </button>
     );
 }
 
