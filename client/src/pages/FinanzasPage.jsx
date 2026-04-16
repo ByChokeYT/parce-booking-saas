@@ -99,8 +99,8 @@ export default function FinanzasPage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h2 className="text-2xl font-black text-white uppercase italic tracking-tighter">Finance_Control</h2>
-                    <p className="text-zinc-500 text-xs font-bold tracking-widest uppercase">Economic_Intelligence_Unit</p>
+                    <h2 className="text-2xl font-black text-white uppercase italic tracking-tighter">Dashboard Financiero</h2>
+                    <p className="text-zinc-500 text-[10px] font-bold tracking-widest uppercase">Inteligencia de Negocio y Auditoría</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                     <button
@@ -121,13 +121,13 @@ export default function FinanzasPage() {
 
             {/* Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <DollarSign size={64} className="text-amber-500" />
+                <div className="bg-gradient-to-br from-zinc-800 via-zinc-900 to-black border border-white/10 p-5 rounded-3xl relative overflow-hidden group shadow-2xl">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <DollarSign size={32} className="text-amber-500" />
                     </div>
-                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Ingresos_Hoy</p>
+                    <p className="text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] mb-1">Ingresos de Hoy</p>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-4xl font-black text-white tracking-tighter">${stats.today}</span>
+                        <span className="text-3xl font-black text-white tracking-tighter font-outfit">${stats.today}</span>
                         <div className="flex items-center gap-1 text-green-500 text-[10px] font-bold">
                             <ArrowUpRight size={12} />
                             <span>LIVE</span>
@@ -135,12 +135,12 @@ export default function FinanzasPage() {
                     </div>
                 </div>
 
-                <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <Activity size={64} className="text-blue-500" />
+                <div className="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black border border-white/5 rounded-3xl p-5 relative overflow-hidden group shadow-xl">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <Activity size={32} className="text-blue-500" />
                     </div>
-                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Transacciones</p>
-                    <span className="text-4xl font-black text-white tracking-tighter">
+                    <p className="text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] mb-1">Transacciones</p>
+                    <span className="text-3xl font-black text-white tracking-tighter font-outfit">
                         {stats.breakdown.reduce((acc, curr) => acc + (curr._count?.payment_method || 1), 0)}
                     </span>
                 </div>

@@ -65,16 +65,16 @@ export default function ClientesPage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl font-black text-white uppercase italic tracking-tighter">Client_Database</h2>
-                    <p className="text-zinc-500 text-xs font-bold tracking-widest uppercase">Target_Registry_Monitor</p>
+                    <h2 className="text-2xl font-black text-white uppercase italic tracking-tighter">Lista de Clientes</h2>
+                    <p className="text-zinc-500 text-[10px] font-bold tracking-widest uppercase">Base de Datos de Fidelización</p>
                 </div>
 
                 <button
                     onClick={() => setIsAdding(!isAdding)}
-                    className="flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-3 rounded-xl font-black text-xs uppercase italic tracking-tighter transition-all active:scale-[0.98] border border-white/5"
+                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-zinc-900 to-zinc-800 text-white px-5 py-2.5 rounded-xl font-black text-[10px] uppercase italic tracking-wider transition-all active:scale-[0.98] border border-white/10 shadow-lg"
                 >
-                    <UserPlus size={16} strokeWidth={3} />
-                    {isAdding ? 'Cancelar_Registro' : 'Nuevo_Cliente'}
+                    <UserPlus size={14} strokeWidth={3} />
+                    {isAdding ? 'CANCELAR' : 'NUEVO CLIENTE'}
                 </button>
             </div>
 
@@ -121,14 +121,14 @@ export default function ClientesPage() {
             )}
 
             {/* Search Bar */}
-            <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" size={18} />
+            <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-amber-500 transition-colors" size={16} />
                 <input
                     type="text"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    placeholder="Filtrar por nombre o teléfono..."
-                    className="w-full bg-zinc-900 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white text-sm focus:border-amber-500/30 focus:outline-none transition-all"
+                    placeholder="Buscar por nombre o teléfono..."
+                    className="w-full bg-zinc-900/50 backdrop-blur-md border border-white/5 rounded-2xl py-3 pl-12 pr-4 text-white text-xs focus:border-amber-500/30 focus:outline-none transition-all shadow-inner"
                 />
             </div>
 

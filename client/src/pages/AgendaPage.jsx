@@ -78,25 +78,25 @@ export default function AgendaPage() {
             {/* Header & Date Selector */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl font-black text-white uppercase italic tracking-tighter">Agenda_System</h2>
-                    <p className="text-zinc-500 text-xs font-bold tracking-widest uppercase">Temporal_Sequence_Grid</p>
+                    <h2 className="text-2xl font-black text-white uppercase italic tracking-tighter">Agenda de Turnos</h2>
+                    <p className="text-zinc-500 text-[10px] font-bold tracking-widest uppercase">Secuencia Temporal Operativa</p>
                 </div>
 
-                <div className="flex items-center gap-2 bg-zinc-900 p-1 rounded-xl border border-white/5">
-                    <button onClick={() => changeDate(-1)} className="p-2 hover:bg-white/5 rounded-lg text-zinc-400">
-                        <ChevronLeft size={20} />
+                <div className="flex items-center gap-2 bg-zinc-900/50 backdrop-blur-md p-1 rounded-xl border border-white/5 shadow-inner">
+                    <button onClick={() => changeDate(-1)} className="p-2 hover:bg-white/10 rounded-lg text-zinc-400 active:scale-90 transition-all">
+                        <ChevronLeft size={18} />
                     </button>
                     <div className="px-4 py-1 text-center min-w-[140px]">
-                        <p className="text-[10px] font-black uppercase text-amber-500 tracking-widest">Active_Date</p>
+                        <p className="text-[8px] font-black uppercase text-amber-500 tracking-[0.2em] mb-0.5">Fecha Seleccionada</p>
                         <input
                             type="date"
                             value={selectedDate}
                             onChange={(e) => setSelectedDate(e.target.value)}
-                            className="bg-transparent text-white font-bold text-sm focus:outline-none uppercase"
+                            className="bg-transparent text-white font-bold text-xs focus:outline-none uppercase tracking-wider"
                         />
                     </div>
-                    <button onClick={() => changeDate(1)} className="p-2 hover:bg-white/5 rounded-lg text-zinc-400">
-                        <ChevronRight size={20} />
+                    <button onClick={() => changeDate(1)} className="p-2 hover:bg-white/10 rounded-lg text-zinc-400 active:scale-90 transition-all">
+                        <ChevronRight size={18} />
                     </button>
                 </div>
 
@@ -123,10 +123,10 @@ export default function AgendaPage() {
             ) : (
                 <div className="grid grid-cols-1 gap-4">
                     {appointments.map((apt) => (
-                        <div key={apt.id} className="group relative bg-zinc-900/50 border border-white/5 rounded-2xl p-5 hover:border-amber-500/30 transition-all overflow-hidden">
-                            {/* Decorative Line */}
-                            <div className={`absolute top-0 left-0 bottom-0 w-1 ${apt.status === 'completed' ? 'bg-green-500' :
-                                apt.status === 'cancelled' ? 'bg-red-500' : 'bg-amber-500'
+                        <div key={apt.id} className="group relative bg-gradient-to-br from-zinc-900 via-zinc-900 to-black border border-white/5 rounded-2xl p-4 hover:border-amber-500/30 transition-all shadow-lg">
+                            {/* Status Indicator */}
+                            <div className={`absolute top-0 left-0 bottom-0 w-1.5 rounded-l-2xl ${apt.status === 'completed' ? 'bg-gradient-to-b from-green-400 to-green-600' :
+                                apt.status === 'cancelled' ? 'bg-gradient-to-b from-red-400 to-red-600' : 'bg-gradient-to-b from-amber-400 to-amber-600'
                                 }`} />
 
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

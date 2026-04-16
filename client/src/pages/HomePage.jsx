@@ -97,9 +97,9 @@ export default function HomePage() {
             {/* 2. METRICS ROW (PREMIUM REMASTER) */}
             <div className="grid grid-cols-2 gap-3">
                 {/* Turnos Hoy - Detail View */}
-                <div className="bg-gradient-to-br from-zinc-800 to-zinc-950 border border-white/10 p-4 rounded-[28px] relative overflow-hidden group shadow-xl">
+                <div className="bg-gradient-to-br from-zinc-800 via-zinc-900 to-zinc-950 border border-white/10 p-4 rounded-[28px] relative overflow-hidden group shadow-xl">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <Calendar size={60} />
+                        <Calendar size={40} />
                     </div>
 
                     <div className="flex flex-col h-full justify-between relative z-10">
@@ -125,7 +125,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Ingresos - Detail View */}
-                <div className="bg-gradient-to-br from-zinc-900 to-black border border-emerald-500/20 p-4 rounded-[28px] relative overflow-hidden group shadow-xl">
+                <div className="bg-gradient-to-br from-emerald-900/40 via-zinc-900 to-black border border-emerald-500/20 p-4 rounded-[28px] relative overflow-hidden group shadow-xl">
                     <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl"></div>
 
                     <div className="flex flex-col h-full justify-between relative z-10">
@@ -153,7 +153,10 @@ export default function HomePage() {
 
             {/* 3. HERO CARD: NEXT APPOINTMENT */}
             {stats.nextAppointments.length > 0 ? (
-                <div className="bg-gradient-to-br from-[#FFB800] to-[#E0A000] rounded-[32px] p-6 text-black relative overflow-hidden shadow-lg">
+                <div className="bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-[32px] p-6 text-black relative overflow-hidden shadow-2xl border border-white/20">
+                    <div className="absolute top-0 right-0 p-10 opacity-10">
+                        <Scissors size={80} strokeWidth={1} />
+                    </div>
                     <div className="relative z-10">
                         <div className="flex justify-between items-start mb-8">
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] bg-black/10 px-2 py-1 rounded-lg">PRÓXIMO EN 20 MIN</span>
@@ -179,10 +182,18 @@ export default function HomePage() {
                 </div>
             ) : (
                 // Empty State Placehoder matching style
-                <div className="bg-zinc-900/30 border border-white/5 border-dashed rounded-[32px] p-8 flex flex-col items-center justify-center text-center opacity-50 min-h-[200px]">
+                <div className="bg-zinc-900/30 border border-white/5 border-dashed rounded-[32px] p-8 flex flex-col items-center justify-center text-center opacity-50 min-h-[160px]">
                     <p className="text-xs font-black uppercase tracking-widest text-zinc-500">Sin próximos turnos</p>
                 </div>
             )}
+
+            {/* 4. QUICK ACTIONS (NEW SECTION) */}
+            <div className="grid grid-cols-4 gap-3 py-2">
+                <QuickActionButton icon={Plus} label="Turno" color="amber" onClick={() => navigate('/agenda')} />
+                <QuickActionButton icon={UserPlus} label="Cliente" color="blue" onClick={() => navigate('/clientes')} />
+                <QuickActionButton icon={TrendingUp} label="Caja" color="emerald" onClick={() => navigate('/finanzas')} />
+                <QuickActionButton icon={Bell} label="Aviso" color="purple" onClick={() => toast('Módulo de avisos próximamente')} />
+            </div>
 
             {/* 4. AGENDA LIST */}
             <div>
@@ -233,22 +244,23 @@ export default function HomePage() {
     );
 }
 
-function QuickAction({ icon: Icon, label, sub, onClick, color }) {
-    const colors = {
-        amber: 'text-amber-500 bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20',
-        blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20',
-        purple: 'text-purple-500 bg-purple-500/10 border-purple-500/20 hover:bg-purple-500/20',
-        red: 'text-red-500 bg-red-500/10 border-red-500/20 hover:bg-red-500/20',
+function QuickActionButton({ icon: Icon, label, onClick, color }) {
+    const colorStyles = {
+        amber: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+        blue: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+        emerald: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+        purple: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
     };
 
     return (
         <button
             onClick={onClick}
-            className={`flex flex-col items-center justify-center p-6 rounded-[32px] border ${colors[color]} transition-all active:scale-[0.95] group`}
+            className={`flex flex-col items-center justify-center p-3 rounded-2xl border ${colorStyles[color]} active:scale-90 transition-all shadow-lg`}
         >
-            <Icon size={28} className="mb-3 group-hover:scale-110 transition-transform" />
-            <h4 className="font-black uppercase italic tracking-tighter text-sm leading-none">{label}</h4>
-            <p className="text-[9px] font-bold uppercase tracking-widest opacity-50 mt-1">{sub}</p>
+            <div className="p-2 rounded-xl bg-white/5 mb-1">
+                <Icon size={18} />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-tighter">{label}</span>
         </button>
     );
 }

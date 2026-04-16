@@ -33,8 +33,8 @@ export default function MainLayout() {
                 <div className="flex items-center gap-4 mb-12 px-2">
                     <img src={logo} alt="FLOW Logo" className="w-12 h-12 object-contain" />
                     <div>
-                        <h1 className="text-amber-500 font-bold text-lg tracking-wider leading-none font-outfit uppercase">FLOW_SYSTEM</h1>
-                        <p className="text-zinc-500 text-[8px] tracking-widest font-medium uppercase mt-1 italic">Gestiona_Tu_Barbería_En_Piloto_Automático</p>
+                        <h1 className="text-amber-500 font-bold text-lg tracking-wider leading-none font-outfit uppercase text-shadow-glow">FLOW SYSTEM</h1>
+                        <p className="text-zinc-500 text-[8px] tracking-widest font-medium uppercase mt-1 italic">Gestiona Tu Barbería En Piloto Automático</p>
                     </div>
                 </div>
 
@@ -117,12 +117,12 @@ export default function MainLayout() {
 
                 {/* Mobile Header (Hidden on Desktop) */}
                 {/* Mobile Header (Global Brand Bar) */}
-                <header className="lg:hidden bg-zinc-950/80 backdrop-blur-md border-b border-white/5 p-4 sticky top-0 z-50 flex items-center justify-between">
+                <header className="lg:hidden bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 backdrop-blur-md border-b border-white/5 p-4 sticky top-0 z-50 flex items-center justify-between shadow-2xl">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center p-1 shadow-lg overflow-hidden">
-                            <img src={logo} alt="Flow" className="w-full h-full object-cover rounded-full" />
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-black border border-white/10 flex items-center justify-center p-1.5 shadow-lg overflow-hidden group">
+                            <img src={logo} alt="Flow" className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
                         </div>
-                        <span className="text-xl font-black text-white italic tracking-tighter font-outfit">FLOW</span>
+                        <span className="text-xl font-black text-white italic tracking-tighter font-outfit bg-clip-text text-transparent bg-gradient-to-r from-white via-amber-200 to-white">FLOW</span>
                     </div>
 
                     <button
@@ -144,9 +144,9 @@ export default function MainLayout() {
                 {/* Floating Action Button (FAB) - Mobile Only */}
                 <button
                     onClick={() => { navigate('/agenda'); toast('Nuevo Turno', { icon: '✨' }); }}
-                    className="lg:hidden fixed bottom-24 right-4 w-14 h-14 bg-amber-500 rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.4)] flex items-center justify-center text-black z-40 active:scale-90 transition-transform animate-bounce-slow"
+                    className="lg:hidden fixed bottom-24 right-4 w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-2xl shadow-[0_8px_32px_rgba(245,158,11,0.4)] flex items-center justify-center text-black z-40 active:scale-90 transition-all animate-bounce-slow border border-white/20"
                 >
-                    <Plus size={32} strokeWidth={3} />
+                    <Plus size={28} strokeWidth={3} />
                 </button>
 
                 {/* Mobile Bottom Nav (Royal Design) */}
@@ -178,7 +178,7 @@ function MobileNavItem({ to, icon: Icon, label }) {
                     <div className={`absolute top-0 w-8 h-1 bg-amber-500 rounded-b-full shadow-[0_0_15px_rgba(245,158,11,0.6)] transition-all duration-300 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}></div>
 
                     <div className={`transition-all duration-300 ${isActive ? 'scale-110 -translate-y-1' : ''}`}>
-                        <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                        <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                     </div>
                     {/* 
                     <span className={`text-[9px] font-black uppercase tracking-widest mt-1 ${isActive ? 'opacity-100' : 'opacity-0 hidden'}`}>
